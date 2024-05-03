@@ -1,6 +1,7 @@
 package ex1.isbnValidator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,5 +28,10 @@ class ValidateISBNTest {
 	void checkInvalidISBN() {
 		boolean result = validator.checkISBN("0140449117");
 		assertFalse(result);
+	}
+
+	@Test
+	void nineDigitISBNIsNotAllowed() {
+		assertThrows(NumberFormatException.class, () -> validator.checkISBN("123456789"));
 	}
 }
