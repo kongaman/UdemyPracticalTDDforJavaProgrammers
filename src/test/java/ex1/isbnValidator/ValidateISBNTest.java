@@ -1,14 +1,13 @@
 package ex1.isbnValidator;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 class ValidateISBNTest {
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void checkAValidISBN() {
+		ValidateISBN validator = new ValidateISBN();
+		boolean result = validator.checkISBN(0140449116);
 	}
 
 }
