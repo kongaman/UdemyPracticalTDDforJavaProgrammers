@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class ValidateISBNTest {
 
 	@Test
-	void checkAValidISBN() {
+	void checkValidISBN() {
 		ValidateISBN validator = new ValidateISBN();
 		boolean result = validator.checkISBN(140449116);
 		assertTrue(result);
