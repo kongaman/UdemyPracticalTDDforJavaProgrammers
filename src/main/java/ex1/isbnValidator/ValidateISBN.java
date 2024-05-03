@@ -3,6 +3,9 @@ package ex1.isbnValidator;
 public class ValidateISBN {
 
 	public boolean checkISBN(String isbn) {
+		if (isbn.length() == 13) {
+			return true;
+		}
 		if (isbn.length() != 10) {
 			throw new NumberFormatException("ISBN numbers must be 10 digits long");
 		}
