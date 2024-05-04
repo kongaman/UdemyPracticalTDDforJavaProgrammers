@@ -17,7 +17,7 @@ class ValidateISBNTest {
 	}
 
 	@Test
-	void checkValidISBN() {
+	void checkValid10DigitISBN() {
 		boolean result = validator.checkISBN("0140449116");
 		assertTrue(result, "first value");
 		result = validator.checkISBN("0140177396");
@@ -27,17 +27,19 @@ class ValidateISBNTest {
 	@Test
 	void checkValid13DigitISBN() {
 		boolean result = validator.checkISBN("9780141023571");
-		assertTrue(result);
+		assertTrue(result, "first value");
+		result = validator.checkISBN("9780141394886");
+		assertTrue(result, "second value");
 	}
 
 	@Test
-	void iSBNNumbersEndingWithXAreValid() {
+	void TenDigitISBNNumbersEndingWithXAreValid() {
 		boolean result = validator.checkISBN("012000030X");
 		assertTrue(result);
 	}
 
 	@Test
-	void checkInvalidISBN() {
+	void checkInvalid10DigitISBN() {
 		boolean result = validator.checkISBN("0140449117");
 		assertFalse(result);
 	}
