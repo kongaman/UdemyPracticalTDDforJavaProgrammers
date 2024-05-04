@@ -9,17 +9,15 @@ public class ValidateISBN {
 
 	public boolean checkISBN(String isbn) {
 		if (isbn.length() == LONG_ISBN_LENGTH) {
-			return isValid13DigitISBN(isbn);
+			return isValidLongISBN(isbn);
 
-		} else {
-			if (isbn.length() != SHORT_ISBN_LENGTH) {
-				throw new NumberFormatException("ISBN numbers must be 10 digits long");
-			}
-			return isValid10DigitISBN(isbn);
+		} else if (isbn.length() == SHORT_ISBN_LENGTH) {
+			return isValidShortISBN(isbn);
 		}
+		throw new NumberFormatException("ISBN numbers must be 10 or 13 digits long");
 	}
 
-	private boolean isValid10DigitISBN(String isbn) {
+	private boolean isValidShortISBN(String isbn) {
 		int total = 0;
 		for (int i = 0; i < SHORT_ISBN_LENGTH; i++) {
 			if (!Character.isDigit(isbn.charAt(i))) {
@@ -32,14 +30,10 @@ public class ValidateISBN {
 				total += Character.getNumericValue(isbn.charAt(i)) * (SHORT_ISBN_LENGTH - i);
 			}
 		}
-		if (total % SHORT_ISBN_MULTIPLIER == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (total % SHORT_ISBN_MULTIPLIER == 0);
 	}
 
-	private boolean isValid13DigitISBN(String isbn) {
+	private boolean isValidLongISBN(String isbn) {
 		int total = 0;
 		for (int i = 0; i < LONG_ISBN_LENGTH; i++) {
 			if (i % 2 == 0) {
@@ -48,11 +42,7 @@ public class ValidateISBN {
 				total += Character.getNumericValue(isbn.charAt(i)) * 3;
 			}
 		}
-		if (total % LONG_ISBN_MULTIPLIER == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (total % LONG_ISBN_MULTIPLIER == 0);
 	}
 
 }
