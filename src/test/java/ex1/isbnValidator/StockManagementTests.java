@@ -10,7 +10,7 @@ class StockManagementTests {
 	void testCanGetACorrectLocatorCode() {
 
 		// This simulates the external webservice that is called in production code
-		ExternalISBNDataService testService = new ExternalISBNDataService() {
+		ExternalISBNDataService testWebService = new ExternalISBNDataService() {
 
 			@Override
 			public Book lookup(String isbn) {
@@ -18,10 +18,20 @@ class StockManagementTests {
 			}
 		};
 
+		// This simulates the external database that is called in production code
+		ExternalISBNDataService testDatabaseService = new ExternalISBNDataService() {
+
+			@Override
+			public Book lookup(String isbn) {
+				return null;
+			}
+		};
+
 		StockManager stockmanager = new StockManager();
-		// this sets our testService as the service to use for tests instead of the
-		// production webservice
-		stockmanager.setService(testService);
+		// this sets our testWebService as the service to use for tests instead of the production webservice
+		stockmanager.setWebService(testWebService);
+		// this sets our testDatabaseService as the service to use for tests instead of the production database
+		stockmanager.setDatabaseService(testDatabaseService);
 
 		String isbn = "0140177396";
 		String locatorCode = stockmanager.getLocatorCode(isbn);
