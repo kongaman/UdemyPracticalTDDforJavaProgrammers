@@ -2,6 +2,11 @@ package ex1.isbnValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +46,29 @@ class StockManagementTests {
 
 	@Test
 	public void databaseIsUsedIfDataIsPresent() {
-		fail();
+		ExternalISBNDataService databaseService = mock(ExternalISBNDataService.class);
+		ExternalISBNDataService webService = mock(ExternalISBNDataService.class);
+		// this creates mocks of the 2 services with default implementations (will return a new book with all values
+		// (isbn, author, title) set to null)
+
+		when(databaseService.lookup("0140177396")).thenReturn(new Book("0140177396", "abc", "abc"));
+		// when lookup is called on databaseService then return...
+		// real values for book don't matter because we want to test which method (database or webservice) is used to
+		// get the data.
+
+		StockManager stockmanager = new StockManager();
+		// this sets mock of webService as the service to use for tests instead of the production webservice
+		stockmanager.setWebService(webService);
+		// this sets mock of databaseService as the service to use for tests instead of the production database service
+		stockmanager.setDatabaseService(databaseService);
+
+		String isbn = "0140177396";
+		String locatorCode = stockmanager.getLocatorCode(isbn);
+
+		verify(databaseService, times(1)).lookup("0140177396");
+		// check that databaseService-class has been called 1 time with the method lookup and the parameter "0140177396"
+		verify(webService, times(0)).lookup(anyString());
+		// check that webService-Class has been called 0 times with the method lookup and any string as parameter.
 	}
 
 	@Test
