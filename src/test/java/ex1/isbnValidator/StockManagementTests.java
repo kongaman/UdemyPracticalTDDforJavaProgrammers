@@ -1,7 +1,6 @@
 package ex1.isbnValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -57,9 +56,7 @@ class StockManagementTests {
 		// get the data.
 
 		StockManager stockmanager = new StockManager();
-		// this sets mock of webService as the service to use for tests instead of the production webservice
 		stockmanager.setWebService(webService);
-		// this sets mock of databaseService as the service to use for tests instead of the production database service
 		stockmanager.setDatabaseService(databaseService);
 
 		String isbn = "0140177396";
@@ -73,7 +70,23 @@ class StockManagementTests {
 
 	@Test
 	public void webserviceIsUsedIfDataIsNotPresentInDatabase() {
-		fail();
+		ExternalISBNDataService databaseService = mock(ExternalISBNDataService.class);
+		ExternalISBNDataService webService = mock(ExternalISBNDataService.class);
+
+		when(databaseService.lookup("0140177396")).thenReturn(null);
+		when(webService.lookup("0140177396")).thenReturn(new Book("0140177396", "abc", "abc"));
+
+		StockManager stockmanager = new StockManager();
+		stockmanager.setWebService(webService);
+		stockmanager.setDatabaseService(databaseService);
+
+		String isbn = "0140177396";
+		String locatorCode = stockmanager.getLocatorCode(isbn);
+
+		verify(databaseService, times(1)).lookup("0140177396");
+		// check that databaseService-class has been called 1 time with the method lookup and the parameter "0140177396"
+		verify(webService, times(1)).lookup("0140177396");
+		// check that webService-Class has been called 1 time with the method lookup and the parameter "0140177396"
 	}
 
 }
