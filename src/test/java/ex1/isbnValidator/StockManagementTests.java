@@ -3,7 +3,7 @@ package ex1.isbnValidator;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,9 +62,13 @@ class StockManagementTests {
 		String isbn = "0140177396";
 		String locatorCode = stockmanager.getLocatorCode(isbn);
 
-		verify(databaseService, times(1)).lookup("0140177396");
+		// verify(databaseService, times(1)).lookup("0140177396");
+		// times(1) is the default so we don't need that parameter if we check for a 1 time call
+		verify(databaseService).lookup("0140177396");
 		// check that databaseService-class has been called 1 time with the method lookup and the parameter "0140177396"
-		verify(webService, times(0)).lookup(anyString());
+		// verify(webService, times(0)).lookup(anyString());
+		// instead of times(0) we can use never() to make it even more clear that this method should never be called
+		verify(webService, never()).lookup(anyString());
 		// check that webService-Class has been called 0 times with the method lookup and any string as parameter.
 	}
 
@@ -83,9 +87,13 @@ class StockManagementTests {
 		String isbn = "0140177396";
 		String locatorCode = stockmanager.getLocatorCode(isbn);
 
-		verify(databaseService, times(1)).lookup("0140177396");
+		// verify(databaseService, times(1)).lookup("0140177396");
+		// times(1) is the default so we don't need that parameter if we check for a 1 time call
+		verify(databaseService).lookup("0140177396");
 		// check that databaseService-class has been called 1 time with the method lookup and the parameter "0140177396"
-		verify(webService, times(1)).lookup("0140177396");
+		// verify(webService, times(1)).lookup("0140177396");
+		// times(1) is the default so we don't need that parameter if we check for a 1 time call
+		verify(webService).lookup("0140177396");
 		// check that webService-Class has been called 1 time with the method lookup and the parameter "0140177396"
 	}
 
