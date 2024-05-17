@@ -2,9 +2,19 @@ package ex1.isbnValidator;
 
 public class StockManager {
 
+	private ExternalISBNDataService service;
+
 	public String getLocatorCode(String isbn) {
-		// TODO Auto-generated method stub
-		return null;
+		Book book = service.lookup(isbn);
+		StringBuilder locator = new StringBuilder();
+		locator.append(isbn.substring(isbn.length() - 4));
+		locator.append(book.getAuthor().substring(0, 1));
+		locator.append(book.getTitle().split(" ").length);
+		return locator.toString();
+	}
+
+	public void setService(ExternalISBNDataService service) {
+		this.service = service;
 	}
 
 }
